@@ -15,8 +15,7 @@
   
   <script>
     const form = document.getElementById('healthForm');
-
-    console.log("Form submitted");
+    const apiKey = prompt("OpenAI API 키를 입력하세요:");
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -27,11 +26,10 @@
   
       const prompt = `${age}세 여성, ${height}cm, ${weight}kg, 목표: ${goal}.\n맞춤 식단과 운동 루틴을 추천해줘.`;
       
-      console.log("Prompt:", prompt);
-
       const res = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
+          'Authorization': 'Bearer ' + apiKey,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
