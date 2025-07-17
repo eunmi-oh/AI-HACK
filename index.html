@@ -15,6 +15,9 @@
   
   <script>
     const form = document.getElementById('healthForm');
+
+    console.log("Form submitted");
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const age = document.getElementById('age').value;
@@ -24,6 +27,8 @@
   
       const prompt = `${age}세 여성, ${height}cm, ${weight}kg, 목표: ${goal}.\n맞춤 식단과 운동 루틴을 추천해줘.`;
       
+      console.log("Prompt:", prompt);
+
       const res = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -34,7 +39,9 @@
           messages: [{ role: 'user', content: prompt }]
         })
       });
-  
+      
+      console.log("OpenAI 응답 대기 중...");
+
       const data = await res.json();
       document.getElementById('result').textContent = data.choices[0].message.content;
     });
