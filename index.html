@@ -1,0 +1,42 @@
+<!-- index.html -->
+<form id="healthForm">
+    나이: <input type="number" id="age" /><br />
+    키(cm): <input type="number" id="height" /><br />
+    몸무게(kg): <input type="number" id="weight" /><br />
+    목표: 
+    <select id="goal">
+      <option value="감량">감량</option>
+      <option value="유지">유지</option>
+    </select><br />
+    <button type="submit">AI 추천 받기</button>
+  </form>
+  
+  <pre id="result"></pre>
+  
+  <script>
+    const form = document.getElementById('healthForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const age = document.getElementById('age').value;
+      const height = document.getElementById('height').value;
+      const weight = document.getElementById('weight').value;
+      const goal = document.getElementById('goal').value;
+  
+      const prompt = `${age}세 여성, ${height}cm, ${weight}kg, 목표: ${goal}.\n맞춤 식단과 운동 루틴을 추천해줘.`;
+      
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'gpt-4',
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+  
+      const data = await res.json();
+      document.getElementById('result').textContent = data.choices[0].message.content;
+    });
+  </script>
+  
